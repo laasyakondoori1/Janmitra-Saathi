@@ -1,0 +1,40 @@
+# Node & Frontend dependencies
+**/node_modules/
+**/dist/
+**/dist-ssr/
+*.local
+
+# Maven & Java Backend
+**/target/
+*.class
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# Environment & Secrets
+.env
+.env.*
+!.env.example
+*.key
+
+# IDEs & Editors
+.idea/
+.vscode/
+*.iml
+*.iws
+*.ipr
+.project
+.classpath
+.settings/
+
+# OS Files & Logs
+.DS_Store
+Thumbs.db
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
