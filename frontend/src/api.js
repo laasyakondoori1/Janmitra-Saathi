@@ -109,6 +109,8 @@ function saveStoredComplaints(complaints) {
   localStorage.setItem(LOCAL_COMPLAINTS_KEY, JSON.stringify(complaints));
 }
 
+const API_BASE = (import.meta.env.VITE_API_URL || "").replace(/\/$/, "");
+
 // Resilient API that works with real Spring Boot backend if running,
 // and gracefully falls back to local simulation so the user can test everything!
 export async function api(path, method = "GET", body) {
@@ -116,9 +118,10 @@ export async function api(path, method = "GET", body) {
   
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 2000); // 2s timeout for local backend check
+    const timeoutId = setTimeout(() => controller.abort(), 4000);
 
-    const r = await fetch("/api" + path, {
+    const targetUrl = `${API_BASE}/api${path}`;
+    const r = await fetch(targetUrl, {
       method,
       headers: {
         "Content-Type": "application/json",

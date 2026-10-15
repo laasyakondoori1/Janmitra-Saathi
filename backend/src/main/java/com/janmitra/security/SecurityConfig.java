@@ -34,13 +34,22 @@ public class SecurityConfig {
     @Bean PasswordEncoder passwordEncoder() { return new BCryptPasswordEncoder(); }
 
     @Bean
-    CorsConfigurationSource cors() {
+    CorsConfigurationSource cors(@org.springframework.beans.factory.annotation.Value("${cors.allowed-origins:*}") String allowedOrigins) {
         var c = new CorsConfiguration();
-        c.setAllowedOrigins(List.of("http://localhost:5173"));
-        c.setAllowedMethods(List.of("GET", "POST", "PATCH", "OPTIONS"));
+        java.util.List<String> origins = java.util.Arrays.stream(allowedOrigins.split(","))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .toList();
+        if (origins.contains("*")) {
+            c.setAllowedOriginPatterns(List.of("*"));
+        } else {
+            c.setAllowedOrigins(origins);
+        }
+        c.setAllowedMethods(List.of("GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"));
         c.setAllowedHeaders(List.of("*"));
+        c.setAllowCredentials(true);
         var s = new UrlBasedCorsConfigurationSource();
-        s.registerCorsConfiguration("/api/**", c);
+        s.registerCorsConfiguration("/**", c);
         return s;
     }
 }
